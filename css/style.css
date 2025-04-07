@@ -1,15 +1,15 @@
 body {
     margin: 0;
     overflow: hidden; /* Evita barras de rolagem */
-    background-color: #333; /* Fundo escuro fora do jogo */
+    background-color: #111; /* Cor de fundo caso o canvas demore a carregar */
 }
 
 #game-container {
-    width: 100vw;
-    height: 100vh;
-    display: block; /* Garante que o canvas ocupe o espaço */
+    width: 100vw;   /* Ocupa toda a largura da viewport */
+    height: 100vh;  /* Ocupa toda a altura da viewport */
+    display: block; /* Comportamento de bloco */
 }
 
 canvas {
-    display: block; /* Evita espaço extra abaixo do canvas */
+    display: block; /* Garante que o canvas não tenha margens extras */
 }

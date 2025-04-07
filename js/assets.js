@@ -1,73 +1,55 @@
 import * as THREE from 'three';
 
-const FIELD_WIDTH = 105;
-const FIELD_HEIGHT = 68;
-const PLAYER_RADIUS = 0.8;
-const PLAYER_HEIGHT = 1.8; // Altura simbólica para o placeholder
-const BALL_RADIUS = 0.22;
+// --- Constantes ---
+const FIELD_WIDTH = 105; const FIELD_HEIGHT = 68; const BALL_RADIUS = 0.22;
+const PLAYER_RADIUS = 0.6; const PLAYER_HEIGHT = 1.8;
+const GOAL_WIDTH = 7.32; const GOAL_HEIGHT = 2.44; const GOAL_DEPTH = 1.5; const POST_RADIUS = 0.08;
+// ------------------
 
-/**
- * Cria e retorna o mesh do campo de futebol.
- */
+// Cria o campo
 export function createField() {
     const fieldGeometry = new THREE.PlaneGeometry(FIELD_WIDTH, FIELD_HEIGHT);
-    // Carregador de Textura (Substitua 'path/to/your/grass_texture.jpg' pelo caminho real)
     const textureLoader = new THREE.TextureLoader();
-    const grassTexture = textureLoader.load('https://threejs.org/examples/textures/terrain/grasslight-big.jpg'); // Exemplo
-    grassTexture.wrapS = THREE.RepeatWrapping;
-    grassTexture.wrapT = THREE.RepeatWrapping;
-    grassTexture.repeat.set(16, 10); // Repetição da textura
-
-    const fieldMaterial = new THREE.MeshStandardMaterial({
-        map: grassTexture,
-        color: 0x559055, // Tonalidade verde por baixo da textura
-        roughness: 0.8,
-        metalness: 0.1
-    });
-
+    const grassTexture = textureLoader.load('https://threejs.org/examples/textures/terrain/grasslight-big.jpg');
+    grassTexture.wrapS = THREE.RepeatWrapping; grassTexture.wrapT = THREE.RepeatWrapping;
+    grassTexture.repeat.set(20, 12);
+    const fieldMaterial = new THREE.MeshStandardMaterial({ map: grassTexture, color: 0x66A066, roughness: 0.9, metalness: 0.0 });
     const fieldMesh = new THREE.Mesh(fieldGeometry, fieldMaterial);
-    fieldMesh.rotation.x = -Math.PI / 2; // Deita o plano no eixo XZ
-    fieldMesh.position.y = 0; // Nível do chão
-    fieldMesh.receiveShadow = true; // Campo recebe sombras
+    fieldMesh.rotation.x = -Math.PI / 2; fieldMesh.position.y = 0;
     return fieldMesh;
 }
 
-/**
- * Cria e retorna o mesh da bola.
- */
+// Cria a bola
 export function createBall() {
-    const ballGeometry = new THREE.SphereGeometry(BALL_RADIUS, 16, 16);
-    const ballMaterial = new THREE.MeshStandardMaterial({
-        color: 0xffffff, // Branca básica
-        roughness: 0.5,
-        metalness: 0.2
-    });
+    const ballGeometry = new THREE.SphereGeometry(BALL_RADIUS, 32, 32);
+    const ballMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4, metalness: 0.1 });
     const ballMesh = new THREE.Mesh(ballGeometry, ballMaterial);
-    ballMesh.position.set(0, BALL_RADIUS, 0); // Posição inicial no centro, acima do chão
-    ballMesh.castShadow = true; // Bola projeta sombra
+    ballMesh.position.set(0, BALL_RADIUS + 0.01, 0);
     return ballMesh;
 }
 
-/**
- * Cria e retorna um mesh placeholder para o jogador.
- * @param {boolean} isOpponent - Define a cor se for oponente.
- */
-export function createPlayerPlaceholder(isOpponent = false) {
-    // Usando uma cápsula como placeholder
+// Cria o gol
+export function createGoal() {
+    const goalGroup = new THREE.Group();
+    const postMaterial = new THREE.MeshStandardMaterial({ color: 0xE0E0E0, roughness: 0.2, metalness: 0.1 });
+    const postGeometry = new THREE.CylinderGeometry(POST_RADIUS, POST_RADIUS, GOAL_HEIGHT, 12);
+    const crossbarGeometry = new THREE.CylinderGeometry(POST_RADIUS, POST_RADIUS, GOAL_WIDTH, 12);
+    const leftPost = new THREE.Mesh(postGeometry, postMaterial); leftPost.position.set(0, GOAL_HEIGHT / 2, -GOAL_WIDTH / 2);
+    const rightPost = new THREE.Mesh(postGeometry, postMaterial); rightPost.position.set(0, GOAL_HEIGHT / 2, GOAL_WIDTH / 2);
+    const crossbar = new THREE.Mesh(crossbarGeometry, postMaterial); crossbar.rotation.x = Math.PI / 2; crossbar.position.set(0, GOAL_HEIGHT, 0);
+    goalGroup.add(leftPost); goalGroup.add(rightPost); goalGroup.add(crossbar);
+    return goalGroup;
+}
+
+// Cria placeholder visual para jogador OU oponente
+export function createPlayerPlaceholder(isOpponent = false, initialPosition) {
     const playerGeometry = new THREE.CapsuleGeometry(PLAYER_RADIUS, PLAYER_HEIGHT - (2 * PLAYER_RADIUS), 4, 10);
-    const playerMaterial = new THREE.MeshStandardMaterial({
-        color: isOpponent ? 0xff0000 : 0x0000ff, // Vermelho para oponente, Azul para jogador
-        roughness: 0.6,
-        metalness: 0.2
-    });
+    const playerColor = isOpponent ? 0xff4444 : 0x0077ff; // Vermelho ou Azul
+    const playerMaterial = new THREE.MeshStandardMaterial({ color: playerColor, roughness: 0.6, metalness: 0.2 });
     const playerMesh = new THREE.Mesh(playerGeometry, playerMaterial);
-    // Ajusta a posição inicial para que a base da cápsula toque y=0
-    playerMesh.position.set(isOpponent ? 10 : -10, PLAYER_HEIGHT / 2, 0);
-    playerMesh.castShadow = true;
-    playerMesh.receiveShadow = true;
+    if (initialPosition) { playerMesh.position.copy(initialPosition); }
+    else { playerMesh.position.set(-10, PLAYER_HEIGHT / 2, 0); } // Fallback
     return playerMesh;
 }
 
-// --- Funções futuras ---
-// export function loadPlayerModel() { /* Lógica para carregar GLTF */ }
-// export function loadStadiumModel() { /* Lógica para carregar estádio */ }
+// console.log("assets.js carregado."); // Log opcional
