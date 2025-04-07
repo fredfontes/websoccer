@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+    overflow: hidden; /* Evita barras de rolagem */
+    background-color: #333; /* Fundo escuro fora do jogo */
+}
+
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    display: block; /* Garante que o canvas ocupe o espaço */
+}
+
+canvas {
+    display: block; /* Evita espaço extra abaixo do canvas */
+}
