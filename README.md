@@ -9,6 +9,7 @@
 | WASD | Move |
 | Space | Kick |
 | Shift | Sprint |
+| Ctrl | Dribble |
 
 ---
 
