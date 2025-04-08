@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Soccer 99</title>
-    <link rel="stylesheet" href="css/style.css"> </head>
+    <title>Web Soccer 99</title> <link rel="stylesheet" href="css/style.css">
+</head>
 <body>
     <div id="game-container"></div>
 
-    <<script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js",
-                "cannon-es": "https://cdn.jsdelivr.net/npm/cannon-es@0.20.0/dist/cannon-es.js"
-            }
+    <div id="timer-display">2:00</div>
+    <div id="score-display">P1 0 - 0 P2</div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js",
+            "cannon-es": "https://cdn.jsdelivr.net/npm/cannon-es@0.20.0/dist/cannon-es.js"
         }
-        </script>
+    }
+    </script>
     <script type="module" src="js/main.js"></script>
 </body>
 </html>

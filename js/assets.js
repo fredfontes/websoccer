@@ -9,13 +9,23 @@ const GOAL_WIDTH = 7.32; const GOAL_HEIGHT = 2.44; const GOAL_DEPTH = 1.5; const
 // Cria o campo
 export function createField() {
     const fieldGeometry = new THREE.PlaneGeometry(FIELD_WIDTH, FIELD_HEIGHT);
-    const textureLoader = new THREE.TextureLoader();
-    const grassTexture = textureLoader.load('https://threejs.org/examples/textures/terrain/grasslight-big.jpg');
-    grassTexture.wrapS = THREE.RepeatWrapping; grassTexture.wrapT = THREE.RepeatWrapping;
-    grassTexture.repeat.set(20, 12);
-    const fieldMaterial = new THREE.MeshStandardMaterial({ map: grassTexture, color: 0x66A066, roughness: 0.9, metalness: 0.0 });
+    const textureLoader = new THREE.TextureLoader(); // Mantém o loader
+
+    // --- ALTERADO PARA CAMINHO LOCAL ---
+    // Certifique-se que o caminho corresponde à sua estrutura de pastas e nome do arquivo
+    const grassTexture = textureLoader.load('textures/grass.jpg'); // Ex: 'textures/grass.jpg' se renomeou
+    // -----------------------------------
+
+    grassTexture.wrapS = THREE.RepeatWrapping;
+    grassTexture.wrapT = THREE.RepeatWrapping;
+    grassTexture.repeat.set(20, 12); // Ajuste conforme necessário
+    const fieldMaterial = new THREE.MeshStandardMaterial({
+        map: grassTexture, color: 0x66A066, roughness: 0.9, metalness: 0.0
+    });
     const fieldMesh = new THREE.Mesh(fieldGeometry, fieldMaterial);
-    fieldMesh.rotation.x = -Math.PI / 2; fieldMesh.position.y = 0;
+    fieldMesh.rotation.x = -Math.PI / 2;
+    fieldMesh.position.y = 0;
+    // console.log("Campo criado (assets.js)");
     return fieldMesh;
 }
 

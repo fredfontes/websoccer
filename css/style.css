@@ -1,15 +1,32 @@
-body {
-    margin: 0;
-    overflow: hidden; /* Evita barras de rolagem */
-    background-color: #111; /* Cor de fundo caso o canvas demore a carregar */
+/* Estilos existentes para body, #game-container, canvas */
+body { margin: 0; overflow: hidden; background-color: #111; }
+#game-container { width: 100vw; height: 100vh; display: block; }
+canvas { display: block; }
+
+/* === Estilos da UI Adicionados === */
+#timer-display,
+#score-display {
+    position: absolute; /* Posiciona sobre o canvas */
+    top: 15px;          /* Distância do topo */
+    color: white;
+    font-size: 2.5em;   /* Tamanho da fonte */
+    font-family: 'Arial', sans-serif; /* Fonte simples */
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para legibilidade */
+    padding: 5px 10px;
+    /* background-color: rgba(0,0,0,0.3); Borda/fundo opcional */
+    /* border-radius: 5px; */
+    z-index: 10; /* Garante que fique sobre o canvas */
+    pointer-events: none; /* Evita que a UI bloqueie cliques no jogo (se houver) */
 }
 
-#game-container {
-    width: 100vw;   /* Ocupa toda a largura da viewport */
-    height: 100vh;  /* Ocupa toda a altura da viewport */
-    display: block; /* Comportamento de bloco */
+#timer-display {
+    left: 50%;                /* Começa no meio */
+    transform: translateX(-50%); /* Centraliza horizontalmente */
 }
 
-canvas {
-    display: block; /* Garante que o canvas não tenha margens extras */
+#score-display {
+    left: 15px; /* Placar à esquerda */
+     /* Ou right: 15px; para placar à direita */
 }
+/* =============================== */
